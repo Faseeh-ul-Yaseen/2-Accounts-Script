@@ -1,0 +1,179 @@
+# using functions, and in this feature we can create a 2 accounts.
+# Non- OOP
+account1_name = ''
+account2_name = ''
+account1_balance = 0
+account2_balance = 0
+account1_password = ''
+account2_password = ''
+
+
+def new_account(account_number, name, balance, password):
+    global account1_name, account1_password, account1_balance
+    global account2_name, account2_password, account2_balance
+
+    if account_number == 1:
+        account1_name = name
+        account1_balance = balance
+        account1_password = password
+
+    if account_number == 2:
+        account2_name = name
+        account2_balance = balance
+        account2_password = password
+
+
+def show(account_number, password):
+    global account1_name, account1_password, account1_balance
+    global account2_password, account2_name, account2_balance
+    if account_number == 1:
+        return None, print('Wrong Password') if password != account1_password \
+            else print(f'Account name {account1_name}\nAccount balance {account1_balance}\n'
+                       f'Account Password {account1_password}')
+    elif account_number == 2:
+        return None, print('Wrong Password') if password != account2_password \
+            else print(f'Account name {account2_name}\nAccount balance {account2_balance}\n'
+                       f'Account Password {account2_password}')
+    else:
+        print('Wrong Account no entered')
+        return None
+
+
+def get_balance(account_number, password):
+    global account1_name, account1_balance, account1_password
+    global account2_name, account2_balance, account2_password
+    if account_number == 1:
+        if password != account1_password:
+            print('Incorrect password')
+            return None
+        return account1_balance
+
+    elif account_number == 2:
+        if password != account2_password:
+            print('Incorrect password')
+            return None
+        return account2_balance
+    else:
+        print('Wrong Account no entered')
+        return None
+
+
+def deposit(account_number, deposit_amount, password):
+    global account1_name, account1_balance, account1_password
+    global account2_name, account2_balance, account2_password
+
+    if account_number == 1:
+        if deposit_amount <= 0:
+            print('You cannot deposit negative or zero amount!')
+            return None
+        if password != account1_password:
+            print('Wrong Password')
+            return None
+        account1_balance += deposit_amount
+        return account1_balance
+
+    elif account_number == 2:
+        if deposit_amount <= 0:
+            print('You cannot deposit negative or zero amount!')
+            return None
+        if password != account2_password:
+            print('Wrong Password')
+            return None
+        account2_balance += deposit_amount
+        return account2_balance
+
+    else:
+        print('Wrong Account no entered')
+        return None
+
+
+def withdraw(account_number, withdraw_amount, password):
+    global account1_name, account1_balance, account1_password
+    global account2_name, account2_balance, account2_password
+
+    if account_number == 1:
+        if withdraw_amount < 0:
+            print('You cannot withdraw Negative or Zero amount')
+            return None
+        elif withdraw_amount > account1_balance:
+            print("you cannot withdraw more than your account balance")
+            return None
+        elif password != account1_password:
+            print("Wrong Password")
+            return None
+        account1_balance -= withdraw_amount
+        return account1_balance
+
+    elif account_number == 2:
+        if withdraw_amount < 0:
+            print('You cannot withdraw Negative or Zero amount')
+            return None
+        elif withdraw_amount > account2_balance:
+            print("you cannot withdraw more than your account balance")
+            return None
+        if password != account2_password:
+            print("Wrong Password")
+            return None
+        account2_balance -= withdraw_amount
+        return account2_balance
+
+    else:
+        print('Wrong Account no entered')
+        return None
+
+
+new_account(1, 'joe', 100, 'bad')
+new_account(2, 'mathew', 200, 'good')
+
+# Main program
+
+while True:
+    print()
+    print('Press "b" to get the balance. Press "d" to make a deposit\nPress "w" to make a '
+          'withdrawal. Press "s" to show the account\nPress "q" to quit\n')
+    print()
+
+    action = input('What do you want to do? ')
+    action = action.lower()  # force lowercase
+    action = action[0]  # just use first letter
+    print()
+
+    if action == 'b':
+        print('Get Balance:')
+        user_account = int(input('Please enter Your account number: '))
+        user_password = input('Please enter the password: ')
+        the_balance = get_balance(user_account, user_password)
+        if the_balance is not None:
+            print('Your balance is:', the_balance)
+
+    elif action == 'd':
+        print('Deposit:')
+        user_account = int(input('Please enter Your account number: '))
+        user_deposit_amount = int(input('Please enter amount to deposit: '))
+        user_password = input('Please enter the password: ')
+        new_balance = deposit(user_account, user_deposit_amount, user_password)
+        if new_balance is not None:
+            print('Your new balance is:', new_balance)
+
+    elif action == 'w':
+        print('Withdraw')
+        user_account = int(input('Please enter Your account number: '))
+        user_withdraw_amount = int(input('Please enter amount to withdraw: '))
+        user_password = input('Please enter the password: ')
+        new_balance = withdraw(user_account, user_withdraw_amount, user_password)
+        if new_balance is not None:
+            print('Your new balance is:', new_balance)
+
+    elif action == 's':
+        print('Show Details')
+        user_account = int(input('Please enter Your account number: '))
+        user_password = input('Please enter the password: ')
+        show(user_account, user_password)
+
+    elif action == 'q':
+        break
+
+    else:
+        print('Wrong Input')
+    print()
+    print('Done')
